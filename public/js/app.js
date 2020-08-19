@@ -5692,13 +5692,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5706,11 +5699,20 @@ __webpack_require__.r(__webpack_exports__);
     authors: {
       query: _queries_js__WEBPACK_IMPORTED_MODULE_0__["AUTHORS_QUERY"],
       variables: function variables() {
-        return {
-          page: this.pageToAsk,
-          name: this.filt ? "%" + this.S_filter.name_filter + "%" : "%%",
-          country: this.filt ? "%" + this.S_filter.country_filter + "%" : "%%"
-        };
+        if (this.date) {
+          return {
+            page: this.pageToAsk,
+            name: this.filt ? "%" + this.S_filter.name_filter + "%" : "%%",
+            country: this.filt ? "%" + this.S_filter.country_filter + "%" : "%%",
+            birth_date: this.date ? this.S_filter.birth_date_filter + " 00:00:00" : "1299-02-12 00:00:00"
+          };
+        } else {
+          return {
+            page: this.pageToAsk,
+            name: this.filt ? "%" + this.S_filter.name_filter + "%" : "%%",
+            country: this.filt ? "%" + this.S_filter.country_filter + "%" : "%%"
+          };
+        }
       }
     }
   },
@@ -5721,22 +5723,29 @@ __webpack_require__.r(__webpack_exports__);
       country: "",
       birth_date: "",
       filt: false,
+      date: false,
       pageToAsk: 1,
       next: true,
       preview: true,
       S_filter: {
         country_filter: "",
         name_filter: "",
-        birth_date_filter: ""
+        birth_date_filter: null
       }
     };
   },
   methods: {
     reset: function reset() {
       this.show_form = false;
+      this.date = false;
+      this.filt = false;
       this.name = "";
       this.country = "";
       this.birth_date = "";
+      this.S_filter.country_filter = "";
+      this.S_filter.name_filter = "";
+      this.S_filter.birth_date_filter = null;
+      this.$apollo.queries.authors.refetch();
     },
     remove: function remove(id) {
       var _this = this;
@@ -5794,8 +5803,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     filter: function filter() {
+      if (this.S_filter.birth_date_filter != null) {
+        this.date = true;
+      }
+
       this.filt = true;
-      this.$apollo.queries.authors.refetch();
     }
   }
 });
@@ -60310,7 +60322,7 @@ var render = function() {
             }
           ],
           staticClass: "form-control",
-          attrs: { type: "text", id: "birth_date", placeholder: "" },
+          attrs: { type: "date", id: "birth_date", placeholder: "" },
           domProps: { value: _vm.S_filter.birth_date_filter },
           on: {
             input: function($event) {
@@ -60328,15 +60340,34 @@ var render = function() {
         { staticClass: "form-group mx-lg-3 mb-2 col-md-1 center" },
         [
           _c(
-            "b-button",
-            {
-              on: {
-                click: function($event) {
-                  return _vm.filter()
-                }
-              }
-            },
-            [_vm._v("Search")]
+            "b-button-group",
+            [
+              _c(
+                "b-button",
+                {
+                  on: {
+                    click: function($event) {
+                      return _vm.filter()
+                    }
+                  }
+                },
+                [_vm._v("Search")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "warning" },
+                  on: {
+                    click: function($event) {
+                      return _vm.reset()
+                    }
+                  }
+                },
+                [_vm._v("Reset")]
+              )
+            ],
+            1
           )
         ],
         1
@@ -60396,42 +60427,54 @@ var render = function() {
     _c("div", { staticClass: "mt-3 " }, [
       _c("nav", { attrs: { "aria-label": "..." } }, [
         _c("ul", { staticClass: "pagination text-center" }, [
-          _c("li", { staticClass: "page-item " }, [
-            _vm.pageToAsk > 1
-              ? _c(
-                  "a",
-                  {
-                    staticClass: "page-link",
-                    staticStyle: { cursor: "pointer" },
-                    on: {
-                      click: function($event) {
-                        return _vm.previus()
+          _c(
+            "li",
+            { staticClass: "page-item " },
+            [
+              _vm.pageToAsk > 1
+                ? _c(
+                    "b-button",
+                    {
+                      staticClass: " btn",
+                      staticStyle: { cursor: "pointer" },
+                      attrs: { variant: "success" },
+                      on: {
+                        click: function($event) {
+                          return _vm.previus()
+                        }
                       }
-                    }
-                  },
-                  [_vm._v("Previous")]
-                )
-              : _vm._e()
-          ]),
+                    },
+                    [_vm._v("Previous")]
+                  )
+                : _vm._e()
+            ],
+            1
+          ),
           _vm._v(" "),
           _vm.authors
-            ? _c("li", { staticClass: "page-item" }, [
-                _vm.next && _vm.authors.paginatorInfo.lastPage > _vm.pageToAsk
-                  ? _c(
-                      "a",
-                      {
-                        staticClass: "page-link",
-                        staticStyle: { cursor: "pointer" },
-                        on: {
-                          click: function($event) {
-                            return _vm.next_page()
+            ? _c(
+                "li",
+                { staticClass: "page-item" },
+                [
+                  _vm.next && _vm.authors.paginatorInfo.lastPage > _vm.pageToAsk
+                    ? _c(
+                        "b-button",
+                        {
+                          staticClass: " btn",
+                          staticStyle: { cursor: "pointer" },
+                          attrs: { variant: "success" },
+                          on: {
+                            click: function($event) {
+                              return _vm.next_page()
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("Next")]
-                    )
-                  : _vm._e()
-              ])
+                        },
+                        [_vm._v("Next")]
+                      )
+                    : _vm._e()
+                ],
+                1
+              )
             : _vm._e()
         ])
       ])
