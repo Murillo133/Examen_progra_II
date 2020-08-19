@@ -1,0 +1,26 @@
+extend type Query {
+    author(id: ID @eq): Author @find
+    authors(name: String @where(operator: "ilike"), country: String @where(operator: "ilike"), birth_date: DateTime @where(clause: "whereDate")): [Author!]! @paginate(defaultCount: 4)
+
+}
+
+extend type Mutation {
+    createAuthor(input: AuthorInput! @spread): Author! @create
+    updateAuthor(id: ID!, input: AuthorInput! @spread): Author! @update
+    deleteAuthor(id: ID!): Author! @delete
+}
+
+type Author {
+    id: ID!
+    name: String!
+    country: String!
+    birth_date: DateTime!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+input AuthorInput {
+  name: String! @rules(apply: ["required"])
+  country: String! @rules(apply: ["required"])
+  birth_date: Date! @rules(apply: ["required"])
+}
