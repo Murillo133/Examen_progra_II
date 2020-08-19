@@ -26,7 +26,7 @@
 
 </form>
 
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="authors">
             <b-card
                 border-variant="info" header="Info" text-variant="black"
                 style="max-width: 16rem;min-width: 16rem;"
@@ -74,6 +74,7 @@ import { CREATE_AUTHOR, DELETE_AUTHOR } from "./mutations.js";
 export default {
     apollo: {
         authors: {
+
             query: AUTHORS_QUERY,
             variables() {
                 return {
@@ -169,6 +170,7 @@ export default {
         this.filt=true
         this.$apollo.queries.authors.refetch();
 
+ 
         },
     }
 };

@@ -60343,51 +60343,55 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row mt-5" },
-      _vm._l(_vm.authors.data, function(author) {
-        return _c(
-          "b-card",
-          {
-            key: author.id,
-            staticClass: "mb-2 ml-3 mt-2 text-center",
-            staticStyle: { "max-width": "16rem", "min-width": "16rem" },
-            attrs: {
-              "border-variant": "info",
-              header: "Info",
-              "text-variant": "black",
-              "header-tag": "header"
-            },
-            scopedSlots: _vm._u(
+    _vm.authors
+      ? _c(
+          "div",
+          { staticClass: "row mt-5" },
+          _vm._l(_vm.authors.data, function(author) {
+            return _c(
+              "b-card",
+              {
+                key: author.id,
+                staticClass: "mb-2 ml-3 mt-2 text-center",
+                staticStyle: { "max-width": "16rem", "min-width": "16rem" },
+                attrs: {
+                  "border-variant": "info",
+                  header: "Info",
+                  "text-variant": "black",
+                  "header-tag": "header"
+                },
+                scopedSlots: _vm._u(
+                  [
+                    {
+                      key: "header",
+                      fn: function() {
+                        return [
+                          _c("h5", { staticClass: "mb-0" }, [
+                            _vm._v(_vm._s(author.name))
+                          ])
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ],
+                  null,
+                  true
+                )
+              },
               [
-                {
-                  key: "header",
-                  fn: function() {
-                    return [
-                      _c("h5", { staticClass: "mb-0" }, [
-                        _vm._v(_vm._s(author.name))
-                      ])
-                    ]
-                  },
-                  proxy: true
-                }
+                _vm._v(" "),
+                _c("b-card-text", [_vm._v(_vm._s(author.country))]),
+                _vm._v(" "),
+                _c("b-card-text", [
+                  _vm._v(_vm._s(author.birth_date.split(" ")[0]))
+                ])
               ],
-              null,
-              true
+              1
             )
-          },
-          [
-            _vm._v(" "),
-            _c("b-card-text", [_vm._v(_vm._s(author.country))]),
-            _vm._v(" "),
-            _c("b-card-text", [_vm._v(_vm._s(author.birth_date.split(" ")[0]))])
-          ],
+          }),
           1
         )
-      }),
-      1
-    ),
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "mt-3 " }, [
       _c("nav", { attrs: { "aria-label": "..." } }, [
